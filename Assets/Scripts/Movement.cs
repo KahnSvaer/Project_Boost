@@ -42,8 +42,6 @@ public class Movement : MonoBehaviour
         {
             ApplyRotation(-1 * rotateConst);
         }
-        
-        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionZ;
     }
 
     private void ApplyRotation(float rotateConst)
@@ -51,6 +49,7 @@ public class Movement : MonoBehaviour
         rb.freezeRotation = true;
         rotateVal = Time.deltaTime * rotateConst;
         transform.Rotate(Vector3.forward * rotateVal);
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionZ;
     }
 
     private void ProcessThrust()
