@@ -9,9 +9,10 @@ public class ColisionHandler : MonoBehaviour
 
     
     [SerializeField] AudioClip sucessSFX;
-    [SerializeField] AudioClip failSFX;
+    [SerializeField] AudioClip crashSFX;
 
-
+    [SerializeField] ParticleSystem successParticles; 
+    [SerializeField] ParticleSystem crashParticles;
 
     AudioSource audioSource;
     Rigidbody rb;
@@ -45,6 +46,7 @@ public class ColisionHandler : MonoBehaviour
             isAlive = false;
             audioSource.Stop();
             audioSource.PlayOneShot(sucessSFX);
+            successParticles.Play();
             GetComponent<Movement>().enabled = false;
             rb.constraints = RigidbodyConstraints.FreezeAll; //To stop all motion
             Invoke("LoadNextLevel",waitTimeNextLevel);
@@ -65,7 +67,8 @@ public class ColisionHandler : MonoBehaviour
         {
             isAlive = false;
             audioSource.Stop();
-            audioSource.PlayOneShot(failSFX);
+            audioSource.PlayOneShot(crashSFX);
+            crashParticles.Play();
             GetComponent<Movement>().enabled = false;
             Invoke("ReloadLevel",waitTimeRespawn);
         }

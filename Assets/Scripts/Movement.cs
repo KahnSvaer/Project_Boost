@@ -8,6 +8,10 @@ public class Movement : MonoBehaviour
 
     [SerializeField] AudioClip thrustSFX;
 
+    [SerializeField] ParticleSystem leftThrustParticle;
+    [SerializeField] ParticleSystem rightThrustParticle;
+    [SerializeField] ParticleSystem mainThrustParticle;
+
     Rigidbody rb;
     AudioSource audioSource;
 
@@ -33,15 +37,29 @@ public class Movement : MonoBehaviour
         leftInput  = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
         rightInput = Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
 
-        if (leftInput && rightInput) {} //This will reduce the priority of leftInput over rightInput
+        if (leftInput && rightInput) {
+            leftThrustParticle.Play();
+            rightThrustParticle.Play();
+        } //This will reduce the priority of leftInput over rightInput
 
         else if (leftInput)
         {
             ApplyRotation(rotateConst);
+            rightThrustParticle.Stop();
+            if (!leftThrustParticle.isPlaying)
+                leftThrustParticle.Play();
         }
         else if (rightInput)
         {
             ApplyRotation(-1 * rotateConst);
+            leftThrustParticle.Stop();
+            if (!rightThrustParticle.isPlaying)
+                rightThrustParticle.Play();
+        }
+        else
+        {
+            leftThrustParticle.Stop();
+            rightThrustParticle.Stop();
         }
     }
 
@@ -62,10 +80,13 @@ public class Movement : MonoBehaviour
             rb.AddRelativeForce(Vector3.up*thrustVal);
             if (!audioSource.isPlaying)
                 audioSource.PlayOneShot(thrustSFX);
+            if (!mainThrustParticle.isPlaying)
+                mainThrustParticle.Play();
         }
         else
         {
             audioSource.Stop();
+            mainThrustParticle.Stop();
         }
     }
 }
