@@ -16,10 +16,13 @@ public class ColisionHandler : MonoBehaviour
     AudioSource audioSource;
     Rigidbody rb;
     
-    
+    bool isAlive;
+
+
     private void Start() {
         audioSource = GetComponent<AudioSource>();
-        rb = GetComponent<Rigidbody>();   
+        rb = GetComponent<Rigidbody>();
+        isAlive = true;   
     }
 
     private void OnCollisionEnter(Collision other) {
@@ -37,10 +40,15 @@ public class ColisionHandler : MonoBehaviour
 
     private void LevelCompleteSequence()
     {
-        audioSource.PlayOneShot(sucessSFX);
-        GetComponent<Movement>().enabled = false;
-        rb.constraints = RigidbodyConstraints.FreezeAll; //To stop all motion
-        Invoke("LoadNextLevel",waitTimeNextLevel);
+        if (isAlive)
+        {
+            isAlive = false;
+            audioSource.Stop();
+            audioSource.PlayOneShot(sucessSFX);
+            GetComponent<Movement>().enabled = false;
+            rb.constraints = RigidbodyConstraints.FreezeAll; //To stop all motion
+            Invoke("LoadNextLevel",waitTimeNextLevel);
+        }
     }
 
     private void LoadNextLevel()
@@ -52,10 +60,15 @@ public class ColisionHandler : MonoBehaviour
     }
 
     private void CrashSequence()
-    {
-        audioSource.PlayOneShot(failSFX);
-        GetComponent<Movement>().enabled = false;
-        Invoke("ReloadLevel",waitTimeRespawn);
+    {   
+        if (isAlive)
+        {
+            isAlive = false;
+            audioSource.Stop();
+            audioSource.PlayOneShot(failSFX);
+            GetComponent<Movement>().enabled = false;
+            Invoke("ReloadLevel",waitTimeRespawn);
+        }
     }
 
     private void ReloadLevel()
