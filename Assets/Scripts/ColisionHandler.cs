@@ -1,11 +1,27 @@
-using System;
-using Unity.VisualScripting.Dependencies.Sqlite;
+using System.Data;
 using UnityEngine;
-using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 
 public class ColisionHandler : MonoBehaviour
 {
+    [SerializeField] int waitTimeRespawn = 3;
+    [SerializeField] int waitTimeNextLevel = 3;
+
+    
+    [SerializeField] AudioClip sucessSFX;
+    [SerializeField] AudioClip failSFX;
+
+
+
+    AudioSource audioSource;
+    Rigidbody rb;
+    
+    
+    private void Start() {
+        audioSource = GetComponent<AudioSource>();
+        rb = GetComponent<Rigidbody>();   
+    }
+
     private void OnCollisionEnter(Collision other) {
         if (other.gameObject.tag == "Respawn"){}
         else if (other.gameObject.tag == "Finish")
@@ -21,7 +37,10 @@ public class ColisionHandler : MonoBehaviour
 
     private void LevelCompleteSequence()
     {
-        LoadNextLevel();
+        audioSource.PlayOneShot(sucessSFX);
+        GetComponent<Movement>().enabled = false;
+        rb.constraints = RigidbodyConstraints.FreezeAll; //To stop all motion
+        Invoke("LoadNextLevel",waitTimeNextLevel);
     }
 
     private void LoadNextLevel()
@@ -34,11 +53,12 @@ public class ColisionHandler : MonoBehaviour
 
     private void CrashSequence()
     {
+        audioSource.PlayOneShot(failSFX);
         GetComponent<Movement>().enabled = false;
-        ReloadLevel();
+        Invoke("ReloadLevel",waitTimeRespawn);
     }
 
-    private static void ReloadLevel()
+    private void ReloadLevel()
     {
         int currant_level = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currant_level);

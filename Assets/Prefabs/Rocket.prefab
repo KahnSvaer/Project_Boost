@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 3848396833714575627}
   - component: {fileID: 1611275709847931859}
   - component: {fileID: 6280422765336183573}
-  - component: {fileID: 888431409261802246}
   - component: {fileID: 3080206985785699448}
   - component: {fileID: 8230957691234801073}
   - component: {fileID: 979022075983342739}
@@ -137,18 +136,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 56
   m_CollisionDetection: 0
---- !u!114 &888431409261802246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5158314137619034214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fb6047246811ac47bfa93766f946298, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3080206985785699448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thrustConst: 3500
   rotateConst: 180
+  thrustSFX: {fileID: 8300000, guid: c83cfc80ac52d164882ba69fb8c1f687, type: 3}
 --- !u!82 &8230957691234801073
 AudioSource:
   m_ObjectHideFlags: 0
@@ -271,3 +259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ef9b8f6e7f38e74ca6fecfbbbb2e1cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waitTimeRespawn: 3
+  waitTimeNextLevel: 3
+  sucessSFX: {fileID: 8300000, guid: 076ec7a5afe25be4c988adce1d26225e, type: 3}
+  failSFX: {fileID: 8300000, guid: 91a3bf624ed92394d9b477ce10119bb5, type: 3}

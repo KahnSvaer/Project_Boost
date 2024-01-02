@@ -6,19 +6,20 @@ public class Movement : MonoBehaviour
     [SerializeField] float thrustConst = 5;
     [SerializeField] float rotateConst = 5;
 
-
-    float rotateVal, thrustVal;
-
-
-    bool leftInput, rightInput, upInput;
-
+    [SerializeField] AudioClip thrustSFX;
 
     Rigidbody rb;
+    AudioSource audioSource;
 
+    float rotateVal, thrustVal;
+    bool leftInput, rightInput, upInput;
+    
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = thrustSFX;
     }    
 
     void Update()
@@ -59,6 +60,12 @@ public class Movement : MonoBehaviour
         {
             thrustVal = Time.deltaTime * thrustConst;
             rb.AddRelativeForce(Vector3.up*thrustVal);
+            if (!audioSource.isPlaying)
+                audioSource.PlayOneShot(thrustSFX);
+        }
+        else
+        {
+            audioSource.Stop();
         }
     }
 }
